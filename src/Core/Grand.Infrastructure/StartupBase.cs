@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry.Trace;
 
 namespace Grand.Infrastructure
 {
@@ -312,6 +313,14 @@ namespace Grand.Infrastructure
 
             //Execute startup interface
             ExecuteStartupBase(typeSearcher);
+
+            services.AddOpenTelemetryTracing(builder =>
+            {
+                builder
+                    .AddAspNetCoreInstrumentation()
+                    .AddMongoDBInstrumentation();
+                  
+            });
         }
 
         /// <summary>
